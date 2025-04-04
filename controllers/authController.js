@@ -37,7 +37,7 @@ export const login = async (req, res, next) => {
         }
 
         const user = await User.findOne({ email }).select('+password');
-        if (!user || !(await user.correctPassword(password, user.password))) {
+        if (!user || !(await user.comparePassword(password, user.password))) {
             return next(new AppError('Incorrect email or password', 401));
         }
 
@@ -47,7 +47,6 @@ export const login = async (req, res, next) => {
     }
 };
 
-
 export const logout = (req, res) => {
     res.cookie('jwt', 'loggedOut', {
         expires: new Date(Date.now() + 10 * 1000),
@@ -55,15 +54,6 @@ export const logout = (req, res) => {
     });
     res.status(200).json({ status: 'success' });
 };
-
-// Get current user
-export const getMe = (req, res) => {
-    res.status(200).json({
-        status: 'success',
-        data: { user: req.user }
-    });
-};
-
 
 // Forgot password
 export const forgotPassword = async (req, res, next) => {

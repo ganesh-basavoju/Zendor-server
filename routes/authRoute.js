@@ -5,8 +5,7 @@ import {
     login,
     logout,
     forgotPassword,
-    resetPassword,
-    getMe
+    resetPassword
 } from '../controllers/authController.js';
 import { protect, authorize } from '../middleware/authMiddleware.js';
 import { validateRequest } from '../middleware/validateRequest.js';
@@ -51,8 +50,5 @@ router.patch('/reset-password/:token',
 
 // Protected routes
 router.use(protect); 
-
-router.get('/me', getMe);
-
 
 export default router;
