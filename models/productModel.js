@@ -11,6 +11,7 @@ const productSchema = new Schema({
         required: [true, 'Product description is required'],
         trim: true
     },
+    features: [String],
     price: {
         type: Number,
         required: [true, 'Product price is required'],
@@ -33,6 +34,25 @@ const productSchema = new Schema({
         min: [0, 'Stock cannot be negative']
     },
     images: [String],
+    colors: [String],
+    dimensions: { // Stored in Inches 
+        width: {
+            type: Number,
+            required: [true, 'Width is required'],
+            min: [0, 'Width cannot be negative']
+        },
+        height: {
+            type: Number,
+            required: [true, 'Height is required'],
+            min: [0, 'Height cannot be negative']
+        },
+    },
+    paparTexture: {
+        type: String,
+        required: [true, 'Papar texture is required'],
+        enum: ['Feather', 'Canvas', 'Leather', 'Silk'],
+    },
+
     // reviews: and ratings should be modified -----changes needed-----
     rating: {
         type: Number,
