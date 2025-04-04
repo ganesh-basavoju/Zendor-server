@@ -76,7 +76,12 @@ const userSchema = new mongoose.Schema(
         ref: "Order",
       },
     ],
-
+    cart: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product",
+      },
+    ],
     passwordResetToken: String,
     passwordResetExpires: Date,
   },
