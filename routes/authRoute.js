@@ -33,6 +33,11 @@ router.post('/register', registerValidation, validateRequest, register);
 router.post('/login', loginValidation, validateRequest, login);
 router.post('/logout', logout);
 
+//Admin Auth Route
+router.post('/admin/register', registerValidation, validateRequest, authorize('admin'), register);
+router.post('/admin/login', loginValidation, validateRequest, authorize('admin'), login);
+router.post('/admin/logout', logout);
+
 // Password management
 router.post('/forgot-password', 
     body('email').isEmail().normalizeEmail(),

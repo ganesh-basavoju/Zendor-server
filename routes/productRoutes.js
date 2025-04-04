@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { validateRequest } from '../middleware/validateRequest';
-import productController from '../controllers/productController';
+import { validateRequest } from '../middleware/validateRequest.js';
+import productController from '../controllers/productController.js';
 
 const router = Router();
 
