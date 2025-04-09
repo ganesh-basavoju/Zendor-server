@@ -5,8 +5,7 @@ import {
     login,
     logout,
     forgotPassword,
-    resetPassword,
-    getMe
+    resetPassword
 } from '../controllers/authController.js';
 import { protect, authorize } from '../middleware/authMiddleware.js';
 import { validateRequest } from '../middleware/validateRequest.js';
@@ -34,6 +33,11 @@ router.post('/register', registerValidation, validateRequest, register);
 router.post('/login', loginValidation, validateRequest, login);
 router.post('/logout', logout);
 
+//Admin Auth Route
+router.post('/admin/register', registerValidation, validateRequest, authorize('admin'), register);
+router.post('/admin/login', loginValidation, validateRequest, authorize('admin'), login);
+router.post('/admin/logout', logout);
+
 // Password management
 router.post('/forgot-password', 
     body('email').isEmail().normalizeEmail(),
@@ -51,8 +55,5 @@ router.patch('/reset-password/:token',
 
 // Protected routes
 router.use(protect); 
-
-router.get('/me', getMe);
-
 
 export default router;
