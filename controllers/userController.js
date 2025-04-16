@@ -104,7 +104,7 @@ class UserController {
       res.status(200).json(user.wishlist);
     } catch (error) {
       return next(
-        new AppError("Error occured while removing product from wishlist", 501)
+        new AppError("Error occurred while removing product from wishlist", 501)
       );
     }
   }
