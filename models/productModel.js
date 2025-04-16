@@ -20,7 +20,8 @@ const productSchema = new Schema({
     category: {
         type: String,
         required: [true, 'Product category is required'],
-        trim: true
+        trim: true,
+        index: true
     },
     subCategory: {
         type: String,
@@ -38,32 +39,32 @@ const productSchema = new Schema({
     dimensions: { // Stored in Inches 
         width: {
             type: Number,
-            required: [true, 'Width is required'],
+            // required: [true, 'Width is required'],
             min: [0, 'Width cannot be negative']
         },
         height: {
             type: Number,
-            required: [true, 'Height is required'],
+            // required: [true, 'Height is required'],
             min: [0, 'Height cannot be negative']
         },
     },
     paparTexture: {
         type: String,
-        required: [true, 'Papar texture is required'],
+        // required: [true, 'Papar texture is required'],
         enum: ['Feather', 'Canvas', 'Leather', 'Silk'],
     },
-
+    tags: {type: [String], index:true},
     // reviews: and ratings should be modified -----changes needed-----
-    rating: {
-        type: Number,
-        default: 0,
-        min: 0,
-        max: 5
-    },
-    numReviews: {
-        type: Number,
-        default: 0
-    },
+    // rating: {
+    //     type: Number,
+    //     default: 0,
+    //     min: 0,
+    //     max: 5
+    // },
+    // numReviews: {
+    //     type: Number,
+    //     default: 0
+    // },
     isActive: {
         type: Boolean,
         default: true

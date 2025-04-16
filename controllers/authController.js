@@ -4,6 +4,15 @@ import AppError from "../utils/appError.js";
 import { generateToken } from "../lib/generateToken.js";
 import sendEmail from "../utils/emailService.js";
 
+const cookieOptions = {
+  expires: new Date(
+    Date.now() + (process.env.JWT_COOKIE_EXPIRES_IN || 1) * 24 * 60 * 60 * 1000
+  ),
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "strict",
+};
+
 // Register new user
 export const register = async (req, res, next) => {
   try {
@@ -20,9 +29,19 @@ export const register = async (req, res, next) => {
       role: req.body.role || "customer", // Default role if not provided
     });
 
-    generateToken(newUser, 200, res);
+    newUser.password = undefined; // Remove password from response
+
+    console.log("New user created:", newUser);
+
+    const token = generateToken(newUser);
+
+    res.cookie("jwt", token, cookieOptions).status(200).json({
+      status: "success",
+      token,
+      data: { newUser },
+    });
   } catch (error) {
-    next(new AppError(error.message, 400));
+    return next(new AppError(error.message, 400));
   }
 };
 
@@ -38,12 +57,20 @@ export const login = async (req, res, next) => {
 
     const user = await User.findOne({ email }).select("+password");
     if (!user || !(await user.comparePassword(password, user.password))) {
-      return next(new AppError("Incorrect email or password", 401));
+      return next(new AppError("Incorrect password", 401));
     }
 
-    user.password = undefined;
-    
-    generateToken(user, 200, res);
+    user.password = undefined; // Remove password from response
+
+    console.log("User logged in:", user);
+
+    const token = generateToken(user);
+
+    res.cookie("jwt", token, cookieOptions).status(200).json({
+      status: "success",
+      token,
+      data: { user },
+    });
   } catch (error) {
     next(new AppError(error.message, 400));
   }

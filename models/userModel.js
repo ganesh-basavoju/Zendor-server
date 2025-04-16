@@ -56,9 +56,6 @@ const userSchema = new mongoose.Schema(
     ],
     phone: {
       type: String,
-      required: [true, "Phone number is required"],
-      unique: true,
-      trim: true,
     },
     // Handle profile picture according to the format later -----change_required-----
     profilePicture: {
