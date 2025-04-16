@@ -7,7 +7,7 @@ import {
     forgotPassword,
     resetPassword
 } from '../controllers/authController.js';
-import { protect, authorize } from '../middleware/authMiddleware.js';
+// import { protect, authorize } from '../middleware/authMiddleware.js';
 import { validateRequest } from '../middleware/validateRequest.js';
 
 const router = express.Router();
@@ -21,6 +21,7 @@ const registerValidation = [
         .withMessage('Password must be at least 6 characters long')
         .matches(/\d/)
         .withMessage('Password must contain at least one number'),
+    body('role').trim().optional().isIn(['admin', 'customer']).withMessage('Role must be either admin or customer'),
 ];
 
 const loginValidation = [
@@ -32,11 +33,6 @@ const loginValidation = [
 router.post('/register', registerValidation, validateRequest, register);
 router.post('/login', loginValidation, validateRequest, login);
 router.post('/logout', logout);
-
-//Admin Auth Route
-router.post('/admin/register', registerValidation, validateRequest, authorize('admin'), register);
-router.post('/admin/login', loginValidation, validateRequest, authorize('admin'), login);
-router.post('/admin/logout', logout);
 
 // Password management
 router.post('/forgot-password', 
@@ -54,6 +50,6 @@ router.patch('/reset-password/:token',
 );
 
 // Protected routes
-router.use(protect); 
+// router.use(protect); 
 
 export default router;

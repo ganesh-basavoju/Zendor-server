@@ -5,7 +5,7 @@ import { validateRequest } from "../middleware/validateRequest.js";
 
 const router = Router();
 
-router.get("/me", validateRequest, userController.getMe);
+router.get("/me", validateRequest, protect, userController.getMe);
 router.post("/add-to-cart", validateRequest, userController.addProductToCart);
 router.post(
   "/remove-from-cart",
@@ -24,10 +24,10 @@ router.post(
 );
 router.get("/get-cart", validateRequest, userController.getCart);
 router.get("/get-wishlist", validateRequest, userController.getWishlist);
-router.get("/get-orders", validateRequest, userController.getOrders);
-router.patch("/updateMe", validateRequest, userController.updateMe);
-router.delete("/deleteMe", validateRequest, userController.deleteMe);
+router.get("/get-orders", validateRequest, protect, userController.getOrders);
+router.patch("/updateMe", validateRequest, protect, userController.updateMe);
+router.delete("/deleteMe", validateRequest, protect, userController.deleteMe);
 
-router.use(protect); // Protect all routes after this middleware
+// router.use(protect); // Protect all routes after this middleware
 
 export default router;
