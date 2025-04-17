@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-const productSchema = new Schema({
+const wallpaperSchema = new Schema({
     name: {
         type: String,
         required: [true, 'Product name is required'],
@@ -54,17 +54,6 @@ const productSchema = new Schema({
         enum: ['Feather', 'Canvas', 'Leather', 'Silk'],
     },
     tags: {type: [String], index:true},
-    // reviews: and ratings should be modified -----changes needed-----
-    // rating: {
-    //     type: Number,
-    //     default: 0,
-    //     min: 0,
-    //     max: 5
-    // },
-    // numReviews: {
-    //     type: Number,
-    //     default: 0
-    // },
     isActive: {
         type: Boolean,
         default: true
@@ -80,11 +69,11 @@ const productSchema = new Schema({
 });
 
 // Update timestamp before saving
-productSchema.pre('save', function(next) {
+wallpaperSchema.pre('save', function(next) {
     this.updatedAt = Date.now();
     next();
 });
 
-const Product = model('Product', productSchema);
+const Wallpaper = model('Wallpaper', wallpaperSchema);
 
-export default Product;
+export default Wallpaper;
