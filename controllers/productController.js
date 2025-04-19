@@ -1,11 +1,10 @@
-import Product from "../models/productModel.js";
 import AppError from "../utils/appError.js";
 import Wallpaper from "../models/wallpaperModel.js";
 import WoodenFloor from "../models/woodenFloorModel.js";
 
 const categories = {
-  wallpaper: Wallpaper,
-  woodenFlooring: WoodenFloor,
+  'wallpaper': Wallpaper,
+  'wooden-flooring': WoodenFloor,
 };
 
 const findCategory = (category) => categories[category] || null;
@@ -13,15 +12,15 @@ const findCategory = (category) => categories[category] || null;
 class ProductController {
   async addProduct(req, res, next) {
     try {
-      const CategoryModel = findCategory(req.body.product.category);
+      const CategoryModel = findCategory(req.body.category);
       if (!CategoryModel) {
         return next(new AppError("Invalid product category", 400));
       }
-
+      console.log(req.body);
       const productData = await CategoryModel.create({
-        ...req.body.product,
-        images: req.files.map((file) => file.path),
+        ...req.body
       });
+      console.log(productData);
       if (!productData) {
         return next(new AppError("Error creating product", 400));
       }
@@ -121,16 +120,32 @@ class ProductController {
   // }
 
   async getProductById(req, res, next) {
-    const { id } = req.params;
+    const { category, id } = req.params;
+    console.log(category, id);
+    if (!id) {
+      return next(new AppError("Product ID is required", 400));
+    }
+    if (!category) {
+      return next(new AppError("Product category is required", 400));
+    }
     try {
-      const CategoryModel = findCategory(req.body.product.category);
+      const CategoryModel = findCategory(category);
+      console.log(CategoryModel);
       if (!CategoryModel) {
         return next(new AppError("Invalid product category", 400));
       }
       const product = await CategoryModel.findById(id);
+      console.log(product);
       if (!product) {
-        return next(new AppError("Product not found", 404));
+        return res.status(404).json({
+          status: "fail",
+          message: "Product not found",
+        });
       }
+      if (!product.isActive) {
+        return next(new AppError("Product is not available", 404));
+      }
+      console.log(product);
       res.status(200).json({
         status: "success",
         data: {

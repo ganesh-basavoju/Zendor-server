@@ -1,5 +1,4 @@
 import User from "../models/userModel.js"; // Assuming you have a User model
-import Product from "../models/productModel.js"; // Assuming you have a Product model
 import Order from "../models/orderModel.js"; // Assuming you have an Order model
 import AppError from "../utils/appError.js";
 

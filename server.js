@@ -7,6 +7,7 @@ import userRoutes from "./routes/userRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import { connectDB } from "./lib/db.js";
+import globalErrorHandler from "./middleware/globalErrorHandler.js";
 
 dotenv.config();
 
@@ -39,6 +40,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/product", productRoutes);
 app.use("/api/admin", adminRoutes);
+
+app.use(globalErrorHandler);
 
 app.listen(PORT, () => {
   console.log("Server is running on http://localhost:" + PORT);

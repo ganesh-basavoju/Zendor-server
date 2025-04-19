@@ -9,7 +9,6 @@ const router = Router();
 router.post(
   "/add-product",
   validateRequest,
-  setProductData,
   protect,
   productController.addProduct
 ); // Add a new product

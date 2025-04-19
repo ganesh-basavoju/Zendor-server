@@ -35,7 +35,7 @@ router.post('/login', loginValidation, validateRequest, login);
 router.post('/logout', logout);
 
 // Password management
-router.post('/forgot-password', 
+router.post('/forget-password', 
     body('email').isEmail().normalizeEmail(),
     validateRequest,
     forgotPassword
